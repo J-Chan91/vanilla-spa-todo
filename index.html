@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="index.css" />
+    <title>Todo List</title>
+  </head>
+  <body>
+    <h1>TODO</h1>
+
+    <div id="container">
+      <main id="todo-main">
+        <div id="todo-ipt-wrapper">
+          <input
+            class="todo-ipt"
+            type="text"
+            placeholder="할 일을 입력해주세요"
+          />
+          <button id="add-todo-btn">등록</button>
+        </div>
+
+        <hr />
+
+        <section id="todo-list-section">
+          <span class="todo-item">
+            <input type="checkbox" class="todo-checkbox" id="todo-item-test" />
+            <label for="todo-item-test"></label>
+            <span class="todo-item-content">Test To do</span>
+          </span>
+        </section>
+      </main>
+    </div>
+
+    <script type="text/javascript" src="index.js"></script>
+  </body>
+</html>

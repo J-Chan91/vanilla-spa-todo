@@ -1,0 +1,107 @@
+@font-face {
+  font-family: "IM_Hyemin-Regular";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2106@1.1/IM_Hyemin-Regular.woff2")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+* {
+  font-size: 15px;
+  font-family: "IM_Hyemin-Regular";
+}
+
+h1 {
+  font-size: 1.5rem;
+}
+
+body {
+  background-color: #e9e6e3;
+}
+
+hr {
+  margin: 3rem auto;
+  width: 20rem;
+}
+
+input[type="checkbox"] {
+  display: none;
+}
+
+input[type="checkbox"] + label {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  border: 1px solid #707070;
+  border-radius: 1rem;
+}
+
+input[type="checkbox"]:checked + label {
+  background-color: #707070;
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 1rem;
+}
+
+#todo-main {
+  width: 720px;
+  margin: 0 auto;
+  border: 2px solid rgb(87, 87, 87);
+  border-radius: 1rem;
+  padding: 1rem;
+}
+
+#todo-ipt-wrapper {
+  width: 590px;
+  margin: 0 auto;
+  display: flex;
+}
+
+.todo-ipt {
+  width: inherit;
+  height: 2rem;
+  padding: 0 1rem;
+  border-radius: 0.5rem;
+  border: none;
+  flex-basis: 2;
+}
+
+#todo-ipt-wrapper button {
+  width: 50px;
+  border: none;
+  border-radius: 0.5rem;
+  flex-basis: 1;
+  margin-left: 1rem;
+  cursor: pointer;
+}
+
+.todo-ipt:focus {
+  outline: none;
+}
+
+#todo-list-section {
+  width: 590px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.todo-item {
+  width: inherit;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.todo-item .todo-checkbox {
+  border: none;
+}
+
+.todo-item-content {
+  margin-left: 1rem;
+  width: inherit;
+  flex-basis: 2;
+}
+
+/* landing */
