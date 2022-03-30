@@ -1,15 +1,14 @@
+import { uuidv4 } from "./commonUtils.js";
 import { LandingPage } from "./components.js";
 import { combineElement, createElement, findElement } from "./elementUtils.js";
 
 const routes = [{ path: "/", component: LandingPage }];
 
-function uuidv4() {
-  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
-    var r = (Math.random() * 16) | 0,
-      v = c == "x" ? r : (r & 0x3) | 0x8;
-    return v.toString(16);
-  });
-}
+const todoMain = findElement("#todo-main");
+const todoIpt = findElement(".todo-ipt");
+const navigationBar = findElement("#navigation");
+const addBtn = findElement("#add-todo-btn");
+const todoList = findElement("#todo-list-section");
 
 const addNavigationEvent = () => {
   navigationBar.addEventListener("click", (e) => {
@@ -39,6 +38,7 @@ const addTodoIptEvents = () => {
     const todoItemCheckbox = createElement("input", {
       type: "checkbox",
       class: "todo-checkbox",
+
       id: `${uuid}`,
     });
 
@@ -65,18 +65,12 @@ const render = async (path) => {
   if (!target) {
     alert("잘못된 경로");
   } else {
-    todoMain.replaceChildren(await target.component());
+    await target.component();
   }
 
   LandingPage();
   addTodoIptEvents();
   addNavigationEvent();
 };
-
-const todoMain = findElement("#todo-main");
-const todoIpt = findElement(".todo-ipt");
-const navigationBar = findElement("#navigation");
-const addBtn = findElement("#add-todo-btn");
-const todoList = findElement("#todo-list-section");
 
 render(location.pathname);
