@@ -1,3 +1,8 @@
+import { LandingPage } from "./components.js";
+import { combineElement, createElement, findElement } from "./elementUtils.js";
+
+const routes = [{ path: "/", component: LandingPage }];
+
 function uuidv4() {
   return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
     var r = (Math.random() * 16) | 0,
@@ -6,48 +11,22 @@ function uuidv4() {
   });
 }
 
-const findElement = (ele, all = false) => {
-  return all ? document.querySelectorAll(ele) : document.querySelector(ele);
+const addNavigationEvent = () => {
+  navigationBar.addEventListener("click", (e) => {
+    e.preventDefault();
+
+    const path = e.target.getAttribute("href");
+
+    history.pushState({}, null, path);
+  });
 };
 
-const combineElement = (target, child) => {
-  target.append(...child);
-};
-
-const createElement = (tag, attr) => {
-  const newEle = document.createElement(tag);
-
-  for (const key in attr) {
-    const value = attr[key];
-
-    switch (key) {
-      case "html":
-        console.log(value);
-        newEle.innerText = value;
-        break;
-      case "event":
-        // for (const e in value) ele.addEventListener(e, value[e]);
-        break;
-      case "class":
-        newEle.className = value;
-        break;
-      case "id":
-        newEle.id = value;
-        break;
-      default:
-        newEle.setAttribute(key, value);
-        break;
-    }
-  }
-
-  return newEle;
-};
-
-const addEvents = () => {
+const addTodoIptEvents = () => {
   addBtn.addEventListener("click", function (e) {
     if (todoIpt.value === "") {
       alert("내용을 적어주세요");
       todoIpt.focus();
+      return;
     }
 
     const uuid = uuidv4();
@@ -80,12 +59,24 @@ const addEvents = () => {
   });
 };
 
+const render = async (path) => {
+  const target = routes.find((route) => route.path === path);
+
+  if (!target) {
+    alert("잘못된 경로");
+  } else {
+    todoMain.replaceChildren(await target.component());
+  }
+
+  LandingPage();
+  addTodoIptEvents();
+  addNavigationEvent();
+};
+
+const todoMain = findElement("#todo-main");
 const todoIpt = findElement(".todo-ipt");
+const navigationBar = findElement("#navigation");
 const addBtn = findElement("#add-todo-btn");
 const todoList = findElement("#todo-list-section");
 
-const render = () => {
-  addEvents();
-};
-
-render();
+render(location.pathname);
