@@ -1,17 +1,12 @@
 import { uuidv4 } from "./commonUtils.js";
+import { all } from "../data/all.js";
 import { combineElement, createElement, findElement } from "./elementUtils.js";
 
-const fetchData = async (url) => {
-  return await (await fetch(url)).json();
-};
-
-export const LandingPage = async () => {
-  const result = await fetchData("../data/all.json");
-
+export const LandingPage = () => {
   const todoList = findElement("#todo-list-section");
   const docFrag = document.createDocumentFragment();
 
-  for (let i = 0; i < result.length; i++) {
+  for (let i = 0; i < all.length; i++) {
     const uuid = uuidv4();
 
     const todoItemContainer = createElement("span", {
@@ -19,16 +14,18 @@ export const LandingPage = async () => {
       id: `todo-${uuid}`,
     });
 
-    const todoItemCheckbox = result[i].complete
+    const todoItemCheckbox = all[i].complete
       ? createElement("input", {
           type: "checkbox",
           class: "todo-checkbox",
           checked: "",
+          event: handleCheckTodo,
           id: `${uuid}`,
         })
       : createElement("input", {
           type: "checkbox",
           class: "todo-checkbox",
+          event: handleCheckTodo,
           id: `${uuid}`,
         });
 
@@ -36,18 +33,38 @@ export const LandingPage = async () => {
       for: `${uuid}`,
     });
 
-    const todoContent = createElement("span", {
-      class: "todo-item-content",
-      html: result[i].content,
-    });
+    const todoContent = all[i].complete
+      ? createElement("span", {
+          class: "todo-item-content complete",
+          html: all[i].content,
+        })
+      : createElement("span", {
+          class: "todo-item-content",
+          html: all[i].content,
+        });
 
     combineElement(todoItemContainer, [
       todoItemCheckbox,
       todoItemLabel,
       todoContent,
     ]);
+
     docFrag.append(todoItemContainer);
   }
 
   todoList.replaceChildren(docFrag);
+};
+
+const handleCheckTodo = (e) => {
+  if (e !== undefined) {
+    console.log(e.path[1].children[2].classList);
+
+    if (e.target.checked) {
+      e.target.setAttribute("checked", "");
+      e.path[1].children[2].classList.add("complete");
+    } else {
+      e.target.removeAttribute("checked");
+      e.path[1].children[2].classList.remove("complete");
+    }
+  }
 };

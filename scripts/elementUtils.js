@@ -17,10 +17,12 @@ export const createElement = (tag, attr) => {
         newEle.innerText = value;
         break;
       case "event":
-        // for (const e in value) ele.addEventListener(e, value[e]);
+        newEle.addEventListener("change", value);
         break;
       case "class":
-        newEle.className = value;
+        const classes = value.split(" ");
+
+        newEle.classList.add(...classes);
         break;
       case "id":
         newEle.id = value;

@@ -102,7 +102,11 @@ input[type="checkbox"]:checked + label {
 .todo-item-content {
   margin-left: 1rem;
   width: inherit;
-  flex-basis: 2;
+}
+
+.todo-item-content.complete {
+  color: #c4c4c4;
+  text-decoration: line-through;
 }
 
 /* landing */

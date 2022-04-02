@@ -4,7 +4,6 @@ import { combineElement, createElement, findElement } from "./elementUtils.js";
 
 const routes = [{ path: "/", component: LandingPage }];
 
-const todoMain = findElement("#todo-main");
 const todoIpt = findElement(".todo-ipt");
 const navigationBar = findElement("#navigation");
 const addBtn = findElement("#add-todo-btn");
@@ -38,7 +37,6 @@ const addTodoIptEvents = () => {
     const todoItemCheckbox = createElement("input", {
       type: "checkbox",
       class: "todo-checkbox",
-
       id: `${uuid}`,
     });
 
@@ -59,13 +57,13 @@ const addTodoIptEvents = () => {
   });
 };
 
-const render = async (path) => {
+const render = (path) => {
   const target = routes.find((route) => route.path === path);
 
   if (!target) {
     alert("잘못된 경로");
   } else {
-    await target.component();
+    target.component();
   }
 
   LandingPage();
