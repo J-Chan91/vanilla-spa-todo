@@ -17,7 +17,7 @@ export const createElement = (tag, attr) => {
         newEle.innerText = value;
         break;
       case "event":
-        newEle.addEventListener("change", value);
+        newEle.addEventListener(value.evtType, value.listener);
         break;
       case "class":
         const classes = value.split(" ");

@@ -1,61 +1,33 @@
 import { uuidv4 } from "./commonUtils.js";
-import { LandingPage } from "./components.js";
-import { combineElement, createElement, findElement } from "./elementUtils.js";
+import { findElement } from "./elementUtils.js";
+import { TodoListPage } from "./pages/TodoListPage.js";
+import { CompleteTodoPage } from "./pages/CompleteTodoPage.js";
+import { ImportantTodoPage } from "./pages/ImportantTodoPage.js";
 
-const routes = [{ path: "/", component: LandingPage }];
-
-const todoIpt = findElement(".todo-ipt");
+const routes = [
+  { path: "/", component: TodoListPage },
+  { path: "/complete", component: CompleteTodoPage },
+  { path: "/important", component: ImportantTodoPage },
+];
 const navigationBar = findElement("#navigation");
-const addBtn = findElement("#add-todo-btn");
-const todoList = findElement("#todo-list-section");
 
-const addNavigationEvent = () => {
-  navigationBar.addEventListener("click", (e) => {
-    e.preventDefault();
+navigationBar.addEventListener("click", (e) => {
+  e.preventDefault();
 
-    const path = e.target.getAttribute("href");
+  const path = e.target.getAttribute("href");
 
-    history.pushState({}, null, path);
-  });
-};
+  console.log("???");
 
-const addTodoIptEvents = () => {
-  addBtn.addEventListener("click", function (e) {
-    if (todoIpt.value === "") {
-      alert("내용을 적어주세요");
-      todoIpt.focus();
-      return;
-    }
+  history.pushState(null, null, path);
 
-    const uuid = uuidv4();
+  render(path);
+});
 
-    const todoItem = createElement("span", {
-      class: "todo-item",
-      id: `todo-${uuid}`,
-    });
+window.addEventListener("popstate", () => {
+  console.log(location.pathname);
 
-    const todoItemCheckbox = createElement("input", {
-      type: "checkbox",
-      class: "todo-checkbox",
-      id: `${uuid}`,
-    });
-
-    const todoItemLabel = createElement("label", {
-      for: `${uuid}`,
-    });
-
-    const todoContent = createElement("span", {
-      class: "todo-item-content",
-      html: todoIpt.value,
-    });
-
-    combineElement(todoItem, [todoItemCheckbox, todoItemLabel, todoContent]);
-
-    todoList.prepend(todoItem);
-
-    todoIpt.value = "";
-  });
-};
+  render(location.pathname);
+});
 
 const render = (path) => {
   const target = routes.find((route) => route.path === path);
@@ -65,10 +37,6 @@ const render = (path) => {
   } else {
     target.component();
   }
-
-  LandingPage();
-  addTodoIptEvents();
-  addNavigationEvent();
 };
 
 render(location.pathname);

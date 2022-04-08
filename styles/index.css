@@ -54,18 +54,31 @@ input[type="checkbox"]:checked + label {
 }
 
 #todo-ipt-wrapper {
-  width: 590px;
+  width: 90%;
   margin: 0 auto;
   display: flex;
 }
 
 .todo-ipt {
-  width: inherit;
+  width: 30rem;
   height: 2rem;
   padding: 0 1rem;
   border-radius: 0.5rem;
   border: none;
   flex-basis: 2;
+  margin-right: 0.3rem;
+}
+
+.todo-date {
+  width: 20rem;
+  height: 2rem;
+  padding: 0 1rem;
+  border: none;
+  border-radius: 0.5rem;
+}
+
+#add-todo-btn {
+  width: 100px;
 }
 
 #todo-ipt-wrapper button {
@@ -109,4 +122,14 @@ input[type="checkbox"]:checked + label {
   text-decoration: line-through;
 }
 
-/* landing */
+#navigation li a {
+  color: #fff;
+  text-decoration: none;
+}
+
+/* 완료 페이지 */
+
+#complete-main {
+  width: 500px;
+  background-color: antiquewhite;
+}
