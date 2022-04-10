@@ -1,1 +1,1 @@
-# 순수 JS, SPA, TODO Web Service
+## 할 일 목록 웹 서비스

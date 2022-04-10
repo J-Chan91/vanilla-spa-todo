@@ -7,22 +7,6 @@ export const TodoListPage = () => {
   handlePrintTodoList();
 };
 
-const handleAddTodoEvent = () => {
-  const addBtn = findElement("#add-todo-btn");
-  const todoIpt = findElement(".todo-ipt");
-
-  if (todoIpt.value === "") {
-    alert("내용을 적어주세요");
-    todoIpt.focus();
-    return;
-  }
-
-  todoDatas.unshift({ content: todoIpt.value, complete: false });
-  handlePrintTodoList();
-
-  todoIpt.value = "";
-};
-
 const handlePrintInitPage = () => {
   const docFrag = document.createDocumentFragment();
   const todoMainEle = findElement("#todo-main");
@@ -35,6 +19,12 @@ const handlePrintInitPage = () => {
   const todoDateEle = createElement("input", {
     class: "todo-date",
     type: "date",
+    event: {
+      evtType: "change",
+      listener: function (e) {
+        sole.log(e.target.value);
+      },
+    },
   });
   const todoAddBtn = createElement("button", {
     id: "add-todo-btn",
@@ -52,68 +42,67 @@ const handlePrintInitPage = () => {
   todoMainEle.replaceChildren(docFrag);
 };
 
+const handleAddTodoEvent = () => {
+  const uuid = uuidv4();
+  const todoIpt = findElement(".todo-ipt");
+
+  if (todoIpt.value === "") {
+    alert("내용을 적어주세요");
+    todoIpt.focus();
+    return;
+  }
+
+  todoDatas.unshift({ todoId: uuid, content: todoIpt.value, complete: false });
+  handlePrintTodoList();
+
+  todoIpt.value = "";
+};
+
 const handlePrintTodoList = () => {
   const todoList = findElement("#todo-list-section");
   const docFrag = document.createDocumentFragment();
 
-  for (let i = 0; i < todoDatas.length; i++) {
-    const uuid = uuidv4();
+  todoDatas.map((item) => {
+    if (!item.complete) {
+      const todoItemContainer = createElement("span", {
+        class: "todo-item",
+        // id: item.todoId,
+      });
 
-    const todoItemContainer = createElement("span", {
-      class: "todo-item",
-      id: `todo-${uuid}`,
-    });
+      const todoItemCheckbox = createElement("input", {
+        type: "checkbox",
+        class: "todo-checkbox",
+        event: { evtType: "change", listener: handleCheckTodo },
+        id: item.todoId,
+      });
 
-    const todoItemCheckbox = todoDatas[i].complete
-      ? createElement("input", {
-          type: "checkbox",
-          class: "todo-checkbox",
-          checked: "",
-          event: { evtType: "change", listener: handleCheckTodo },
-          id: `${uuid}`,
-        })
-      : createElement("input", {
-          type: "checkbox",
-          class: "todo-checkbox",
-          event: { evtType: "change", listener: handleCheckTodo },
-          id: `${uuid}`,
-        });
+      const todoItemLabel = createElement("label", {
+        for: item.todoId,
+      });
 
-    const todoItemLabel = createElement("label", {
-      for: `${uuid}`,
-    });
+      const todoContent = createElement("span", {
+        class: "todo-item-content",
+        html: item.content,
+      });
 
-    const todoContent = todoDatas[i].complete
-      ? createElement("span", {
-          class: "todo-item-content complete",
-          html: todoDatas[i].content,
-        })
-      : createElement("span", {
-          class: "todo-item-content",
-          html: todoDatas[i].content,
-        });
+      combineElement(todoItemContainer, [
+        todoItemCheckbox,
+        todoItemLabel,
+        todoContent,
+      ]);
 
-    combineElement(todoItemContainer, [
-      todoItemCheckbox,
-      todoItemLabel,
-      todoContent,
-    ]);
-
-    docFrag.append(todoItemContainer);
-  }
+      docFrag.append(todoItemContainer);
+    }
+  });
 
   todoList.replaceChildren(docFrag);
 };
 
 // 할 일 클릭 토글 함수
 const handleCheckTodo = (e) => {
-  if (e !== undefined) {
-    if (e.target.checked) {
-      e.target.setAttribute("checked", "");
-      e.path[1].children[2].classList.add("complete");
-    } else {
-      e.target.removeAttribute("checked");
-      e.path[1].children[2].classList.remove("complete");
-    }
-  }
+  const targetIdx = todoDatas.findIndex((item) => item.todoId === e.target.id);
+
+  todoDatas.splice(targetIdx, 1);
+
+  handlePrintTodoList();
 };

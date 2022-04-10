@@ -12,11 +12,13 @@ const routes = [
 const navigationBar = findElement("#navigation");
 
 navigationBar.addEventListener("click", (e) => {
+  let path = e.target.getAttribute("href");
+
+  if (e.target.localName === "li") {
+    path = e.target.children[0].getAttribute("href");
+  }
+
   e.preventDefault();
-
-  const path = e.target.getAttribute("href");
-
-  console.log("???");
 
   history.pushState(null, null, path);
 
